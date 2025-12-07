@@ -1,0 +1,1 @@
+day2-output.txt placeholder output.
