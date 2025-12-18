@@ -1,0 +1,31 @@
+DAY 5 — PROCESS MANAGEMENT OUTPUT
+
+1. Output of ps aux | head
+--------------------------------
+(paste actual output here after running command)
+
+2. Three running processes observed
+--------------------------------
+1. systemd
+2. bash
+3. sshd
+
+3. PID of process killed
+--------------------------------
+PID: __________
+
+4. Difference between kill -15 and kill -9
+--------------------------------
+kill -15 (SIGTERM):
+Gracefully stops a process and allows cleanup.
+
+kill -9 (SIGKILL):
+Forcefully terminates a process without cleanup.
+
+5. One-line command meanings
+--------------------------------
+ps      : Displays running processes.
+top     : Shows real-time CPU and memory usage.
+htop    : Interactive process viewer.
+nice    : Starts a process with a given priority.
+renice  : Changes priority of a running process.
