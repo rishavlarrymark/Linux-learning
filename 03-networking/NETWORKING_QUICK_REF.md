@@ -176,3 +176,39 @@ Both must succeed.
 
 ### Production Thinking
 Listening + Allowed + Routed = Reachable
+
+---
+
+# — Network Debugging (Engineer Mode)
+
+- traceroute → shows hop-by-hop path
+- tcpdump → packet visibility on interface
+- latency → response delay (RTT)
+- packet loss → dropped packets
+- hop → router step in traffic path
+- ICMP → diagnostic protocol used by ping/traceroute
+- path failure → traffic stops before destination
+- stars (* * *) → hop not responding
+- packets seen in tcpdump → traffic reached host
+- no packets in tcpdump → traffic blocked before host
+
+### Traffic Trace Flow
+Client → Router → ISP → Internet → Cloud Gateway → Server → Application
+
+### Failure Signals
+- traceroute stops mid-path → routing issue
+- continuous `* * *` → firewall / ICMP blocked
+- high RTT in hops → latency
+- packet drops in ping → packet loss
+- tcpdump shows SYN but no response → service issue
+- tcpdump shows nothing → traffic not reaching host
+
+### Debug Order
+Traceroute → Identify failing hop → tcpdump → Confirm packet arrival → Inspect routing / firewall → Verify service
+
+### Deep Rule
+Traceroute shows where traffic stops  
+tcpdump shows whether traffic reached the host
+
+### Production Thinking
+Trace path + Confirm packets + Identify boundary = Root cause
