@@ -212,3 +212,44 @@ tcpdump shows whether traffic reached the host
 
 ### Production Thinking
 Trace path + Confirm packets + Identify boundary = Root cause
+
+
+---
+
+# — AWS VPC (Network Isolation)
+
+- VPC → private network inside cloud
+- CIDR → defines VPC address space
+- Subnets → network segmentation
+- Route table → traffic direction
+- IGW → internet connectivity
+- NAT → private subnet internet access
+- Security Group → stateful filtering
+- NACL → stateless subnet firewall
+- AZ → physical datacenter zone
+- VPC → region-scoped network
+- Default state → fully isolated
+- Resources communicate using private IP
+
+### Traffic Flow
+Client → Internet → IGW → Route Table → Subnet → EC2 → Service
+
+### Isolation Model
+Internet → Public Subnet → Load Balancer → Private Subnet → Application → Database
+
+### Failure Signals
+- No internet access → missing IGW route
+- Public instance unreachable → SG blocking inbound
+- Private instance cannot reach internet → NAT missing
+- Cross-VPC communication fails → no peering / TGW
+- Subnet resources unreachable → wrong route table association
+
+### Debug Order
+Check VPC CIDR → Check Subnet → Check Route Table → Check IGW/NAT → Check Security Group → Check NACL
+
+### Deep Rule
+Routing decides **where traffic goes**  
+Security decides **whether traffic is allowed**
+
+### Production Thinking
+Isolation + Routing + Security = Cloud Network
