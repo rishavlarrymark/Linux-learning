@@ -1,4 +1,4 @@
-# 🌐 NETWORKING — QUICK RECALL (Day 1–5)
+# 🌐 NETWORKING — QUICK RECALL (Day 1–15)
 
 ---
 
@@ -253,3 +253,63 @@ Security decides **whether traffic is allowed**
 
 ### Production Thinking
 Isolation + Routing + Security = Cloud Network
+
+# — Subnets & Routing (Traffic Flow)
+
+- VPC CIDR → base network range  
+- Subnet → smaller network inside VPC  
+- Subnets divide network for organization  
+- Each subnet belongs to **one AZ**  
+- Every subnet uses a **route table**  
+- Route table → decides next hop  
+- `Destination → Target` rule format  
+- `10.0.0.0/16 → local` → internal traffic  
+- `0.0.0.0/0 → IGW` → internet route  
+- Public subnet → route to IGW  
+- Private subnet → no direct IGW  
+- NAT → private subnet outbound internet  
+- Routing happens at **Layer 3**
+
+### Traffic Flow
+
+Internet  
+→ Internet Gateway  
+→ Route Table  
+→ Public Subnet  
+→ Load Balancer  
+→ Private Subnet  
+→ Application Server
+
+### Public vs Private Logic
+
+Public subnet  
+- route to IGW  
+- internet reachable
+
+Private subnet  
+- no IGW route  
+- outbound via NAT
+
+### Failure Signals
+
+- Instance can't reach internet → missing `0.0.0.0/0`  
+- Public service unreachable → subnet not public  
+- Private server can't update packages → NAT missing  
+- Internal service unreachable → wrong subnet / SG block
+
+### Debug Order
+
+Check Subnet  
+→ Check Route Table  
+→ Check Default Route  
+→ Check IGW / NAT  
+→ Check Security Group
+
+### Deep Rule
+
+Subnets decide **where resources live**  
+Route tables decide **where traffic goes**
+
+### Production Thinking
+
+Correct subnet + correct route = reachable service
