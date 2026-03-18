@@ -125,6 +125,8 @@
 - `xfs_growfs /mount` → grow XFS filesystem
 - `fsck /dev/sdX` → filesystem check
 
+---
+
 ## File Search & Disk Debug
 - `find /path -name "file"` → locate missing file
 - `find / -iname "file"` → case-insensitive search
@@ -140,5 +142,34 @@
 - `ls -li` → inode numbers
 - `lsof | grep deleted` → deleted but still open files
 
+---
+
 ## Networking & Connectivity
+
+- `ip a` → show interfaces + IP addresses
+- `ip r` → show routing table
+- `ping <ip>` → test connectivity (ICMP)
+- `ping <domain>` → test DNS + connectivity
+- `cat /etc/resolv.conf` → DNS configuration
+- `ss -tulnp` → listening ports + processes
+- `ss -tulnp | grep :PORT` → check specific port
+- `lsof -i :PORT` → process using port
+- `curl http://localhost:PORT` → test service locally
+- `curl -I http://host` → check HTTP response headers
+- `wget http://host` → test download/connectivity
+- `traceroute <host>` → path of packets
+- `ip route get <ip>` → route decision for destination
+- `hostname -I` → get system IP quickly
+- `netstat -tulnp` → (older) port check
+- `tcpdump -i eth0` → capture packets
+- `tcpdump port 80` → capture HTTP traffic
+
+### Quick Debug Flow
+- `ip a` → interface up?
+- `ip r` → route exists?
+- `ping 8.8.8.8` → network reachable?
+- `ping google.com` → DNS working?
+- `ss -tulnp` → port listening?
+- `curl localhost:PORT` → service responding?
+
 (add later)
