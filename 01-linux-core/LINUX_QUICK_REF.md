@@ -172,4 +172,29 @@
 - `ss -tulnp` → port listening?
 - `curl localhost:PORT` → service responding?
 
+---
+
+## Packet & Network Debug (Day 11)
+
+- `tcpdump -i eth0` → capture all traffic on interface
+- `tcpdump -i eth0 icmp` → capture ping traffic (request/response)
+- `tcpdump -i eth0 host <IP>` → traffic to/from specific host
+- `tcpdump -i eth0 port 80` → HTTP traffic capture
+- `tcpdump -i eth0 port 53` → DNS traffic capture
+- `tcpdump -i eth0 port 8080` → custom app port debug
+- `tcpdump -i eth0 -nn` → raw IPs (no DNS resolution)
+- `tcpdump -i eth0 -c 20` → limit packet capture
+- `tcpdump -i eth0 src <IP>` → outgoing traffic filter
+- `tcpdump -i eth0 dst <IP>` → incoming traffic filter
+
+### Packet Debug Logic
+- request only → response blocked (firewall/network)
+- request + reply → working
+- no packets → no traffic / wrong interface
+
+### TCP Insight
+- SYN → request start
+- SYN-ACK → server response
+- ACK → connection established
+- RST → connection refused
 (add later)
