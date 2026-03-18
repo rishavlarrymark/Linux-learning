@@ -313,3 +313,72 @@ Route tables decide **where traffic goes**
 ### Production Thinking
 
 Correct subnet + correct route = reachable service
+
+# — Internet & Private Access (IGW + NAT)
+
+- IGW → connects VPC to internet  
+- IGW → inbound + outbound  
+- NAT → private → internet only  
+- NAT → blocks inbound  
+- Public subnet → route to IGW  
+- Private subnet → route to NAT  
+- NAT must be in public subnet  
+- NAT uses Elastic IP  
+- Internet access needs route + gateway  
+- Routing happens at L3  
+
+### Traffic Flow
+
+Public:
+Internet → IGW → EC2  
+
+Private:
+EC2 → NAT → IGW → Internet  
+
+---
+
+### Public vs Private Logic
+
+Public subnet  
+- route → IGW  
+- inbound + outbound  
+
+Private subnet  
+- route → NAT  
+- outbound only  
+
+---
+
+### Failure Signals
+
+- Public instance no internet → IGW missing  
+- Public service unreachable → no public IP / SG block  
+- Private instance no internet → NAT missing  
+- Timeout → route / firewall issue  
+- Works locally, fails externally → exposure issue  
+
+---
+
+### Debug Order
+
+Check Subnet  
+→ Check Route Table  
+→ Check IGW / NAT  
+→ Check Security Group  
+→ Test connectivity  
+
+---
+
+### Deep Rule
+
+IGW → full internet access  
+NAT → outbound-only access  
+
+---
+
+### Production Thinking
+
+Public = exposed  
+Private = protected  
+
+Route + Gateway + Security = internet access  
