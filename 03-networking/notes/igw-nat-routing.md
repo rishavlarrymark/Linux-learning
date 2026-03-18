@@ -1,6 +1,8 @@
-# 🌐 Internet Gateway (IGW) — Production Operational Scenario
+# 🌐 DAY 10 — Internet & Private Access — Production Operational Scenario
 
-## 🔹 Internet Gateway
+---
+
+## 🔹 Internet Gateway (IGW)
 
 - **Traffic Flow:** Internet → EC2:<public-ip>:80/443  
 - **Layer:** L3 / L4  
@@ -10,21 +12,15 @@
 - **Root Cause Pattern:** Missing IGW / no route / blocked port  
 - **Fix Action:**
 
-# Attach IGW to VPC
 aws ec2 attach-internet-gateway \
   --internet-gateway-id igw-xxxx \
   --vpc-id vpc-xxxx
 
-# Add default route to IGW
 aws ec2 create-route \
   --route-table-id rtb-xxxx \
   --destination-cidr-block 0.0.0.0/0 \
   --gateway-id igw-xxxx
 
-# Allocate public IP (Elastic IP)
-aws ec2 allocate-address
-
-# Allow inbound HTTP
 aws ec2 authorize-security-group-ingress \
   --group-id sg-xxxx \
   --protocol tcp \
@@ -34,8 +30,6 @@ aws ec2 authorize-security-group-ingress \
 - ⚠️ **Blast Radius:** Subnet / VPC  
 
 ---
-
-# 🌐 NAT Gateway — Production Operational Scenario
 
 ## 🔹 NAT Gateway
 
@@ -47,15 +41,10 @@ aws ec2 authorize-security-group-ingress \
 - **Root Cause Pattern:** NAT missing / wrong subnet  
 - **Fix Action:**
 
-# Allocate Elastic IP
-aws ec2 allocate-address
-
-# Create NAT Gateway
 aws ec2 create-nat-gateway \
   --subnet-id subnet-public-xxxx \
   --allocation-id eipalloc-xxxx
 
-# Add route to NAT
 aws ec2 create-route \
   --route-table-id rtb-private-xxxx \
   --destination-cidr-block 0.0.0.0/0 \
@@ -65,28 +54,23 @@ aws ec2 create-route \
 
 ---
 
-# 🌐 Route Table — Production Operational Scenario
-
 ## 🔹 Route Table
 
 - **Traffic Flow:** EC2 → Route → IGW/NAT  
 - **Layer:** L3  
 - **Controls:** Routing  
 - **Failure Symptom:** Traffic stuck  
-- **Immediate Check:** Routes + association  
+- **Immediate Check:** Routes + subnet association  
 - **Root Cause Pattern:** Missing default route  
 - **Fix Action:**
 
-# View routes
 aws ec2 describe-route-tables
 
-# Add route (IGW example)
 aws ec2 create-route \
   --route-table-id rtb-xxxx \
   --destination-cidr-block 0.0.0.0/0 \
   --gateway-id igw-xxxx
 
-# Associate subnet
 aws ec2 associate-route-table \
   --subnet-id subnet-xxxx \
   --route-table-id rtb-xxxx
@@ -94,8 +78,6 @@ aws ec2 associate-route-table \
 - ⚠️ **Blast Radius:** Subnet / VPC  
 
 ---
-
-# 🌐 Private Subnet Internet Access — Production Operational Scenario
 
 ## 🔹 Private EC2 via NAT
 
@@ -107,20 +89,16 @@ aws ec2 associate-route-table \
 - **Root Cause Pattern:** NAT missing / SG blocked  
 - **Fix Action:**
 
-# Check outbound SG (allow all)
 aws ec2 authorize-security-group-egress \
   --group-id sg-xxxx \
   --protocol -1 \
   --cidr 0.0.0.0/0
 
-# Verify route exists
 aws ec2 describe-route-tables
 
 - ⚠️ **Blast Radius:** Subnet / AZ  
 
 ---
-
-# 🌐 Public Subnet Exposure — Production Operational Scenario
 
 ## 🔹 Public EC2 via IGW
 
@@ -132,14 +110,12 @@ aws ec2 describe-route-tables
 - **Root Cause Pattern:** Port blocked / no public IP  
 - **Fix Action:**
 
-# Open HTTPS port
 aws ec2 authorize-security-group-ingress \
   --group-id sg-xxxx \
   --protocol tcp \
   --port 443 \
   --cidr 0.0.0.0/0
 
-# Check instance public IP
 aws ec2 describe-instances
 
 - ⚠️ **Blast Radius:** Subnet / VPC  
