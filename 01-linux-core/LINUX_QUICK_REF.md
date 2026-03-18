@@ -174,7 +174,7 @@
 
 ---
 
-## Packet & Network Debug (Day 11)
+## Packet & Network Debug
 
 - `tcpdump -i eth0` → capture all traffic on interface
 - `tcpdump -i eth0 icmp` → capture ping traffic (request/response)
