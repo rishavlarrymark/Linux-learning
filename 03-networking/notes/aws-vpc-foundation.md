@@ -25,7 +25,7 @@ aws ec2 create-subnet \
 
 ---
 
-# 🌐 VPC Isolation — Production Operational Scenario
+# 🌐 VPC Isolation
 
 ## 🔹 Network Isolation Boundary
 
@@ -56,7 +56,7 @@ aws ec2 create-route \
 
 ---
 
-# 🌐 Internet Gateway (IGW) — Production Operational Scenario
+# 🌐 Internet Gateway (IGW)
 
 ## 🔹 Public Internet Access
 
@@ -83,7 +83,7 @@ aws ec2 create-route \
 
 ---
 
-# 🌐 Route Table — Production Operational Scenario
+# 🌐 Route Table
 
 ## 🔹 Traffic Direction Control
 
@@ -108,7 +108,7 @@ aws ec2 create-route \
 
 ---
 
-# 🌐 Subnet Segmentation — Production Operational Scenario
+# 🌐 Subnet Segmentation
 
 ## 🔹 Network Partition
 
@@ -134,7 +134,7 @@ aws ec2 describe-route-tables
 
 ---
 
-# 🌐 Security Boundary (Security Groups / NACL) — Production Operational Scenario
+# 🌐 Security Boundary (Security Groups / NACL)
 
 ## 🔹 Traffic Permission Control
 
@@ -163,7 +163,7 @@ aws ec2 authorize-security-group-egress \
 
 ---
 
-# 🌐 Blast Radius Isolation — Production Operational Scenario
+# 🌐 Blast Radius Isolation
 
 ## 🔹 Environment Segmentation
 
