@@ -10,13 +10,13 @@
 - **Root Cause Pattern:** Overlapping CIDR, incorrect subnet allocation  
 - **Fix Action:**
 
-# Check VPC CIDR
+## Check VPC CIDR
 aws ec2 describe-vpcs
 
-# Check subnets
+## Check subnets
 aws ec2 describe-subnets
 
-# (Fix requires redesign → recreate subnet)
+## (Fix requires redesign → recreate subnet)
 aws ec2 create-subnet \
   --vpc-id vpc-xxxx \
   --cidr-block 10.0.20.0/24
@@ -37,16 +37,16 @@ aws ec2 create-subnet \
 - **Root Cause Pattern:** No connectivity configured  
 - **Fix Action:**
 
-# Create VPC Peering
+## Create VPC Peering
 aws ec2 create-vpc-peering-connection \
   --vpc-id vpc-aaaa \
   --peer-vpc-id vpc-bbbb
 
-# Accept Peering
+## Accept Peering
 aws ec2 accept-vpc-peering-connection \
   --vpc-peering-connection-id pcx-xxxx
 
-# Add route
+## Add route
 aws ec2 create-route \
   --route-table-id rtb-xxxx \
   --destination-cidr-block 10.1.0.0/16 \
@@ -68,12 +68,12 @@ aws ec2 create-route \
 - **Root Cause Pattern:** Missing IGW / route  
 - **Fix Action:**
 
-# Attach IGW
+## Attach IGW
 aws ec2 attach-internet-gateway \
   --internet-gateway-id igw-xxxx \
   --vpc-id vpc-xxxx
 
-# Add route
+## Add route
 aws ec2 create-route \
   --route-table-id rtb-xxxx \
   --destination-cidr-block 0.0.0.0/0 \
@@ -95,10 +95,10 @@ aws ec2 create-route \
 - **Root Cause Pattern:** Missing/wrong route  
 - **Fix Action:**
 
-# Check routes
+## Check routes
 aws ec2 describe-route-tables
 
-# Add default route
+## Add default route
 aws ec2 create-route \
   --route-table-id rtb-xxxx \
   --destination-cidr-block 0.0.0.0/0 \
@@ -110,7 +110,7 @@ aws ec2 create-route \
 
 # 🌐 Subnet Segmentation
 
-## 🔹 Network Partition
+### 🔹 Network Partition
 
 - **Traffic Flow:** Public → Private:443  
 - **Layer:** L3 / L4  
@@ -120,14 +120,14 @@ aws ec2 create-route \
 - **Root Cause Pattern:** Blocked SG / wrong route  
 - **Fix Action:**
 
-# Allow SG traffic
+## Allow SG traffic
 aws ec2 authorize-security-group-ingress \
   --group-id sg-db \
   --protocol tcp \
   --port 443 \
   --source-group sg-app
 
-# Verify routes
+## Verify routes
 aws ec2 describe-route-tables
 
 - ⚠️ **Blast Radius:** Subnet / AZ
@@ -136,7 +136,7 @@ aws ec2 describe-route-tables
 
 # 🌐 Security Boundary (Security Groups / NACL)
 
-## 🔹 Traffic Permission Control
+### 🔹 Traffic Permission Control
 
 - **Traffic Flow:** Internet → EC2:80  
 - **Layer:** L4  
@@ -146,14 +146,14 @@ aws ec2 describe-route-tables
 - **Root Cause Pattern:** Port blocked  
 - **Fix Action:**
 
-# Allow HTTP
+## Allow HTTP
 aws ec2 authorize-security-group-ingress \
   --group-id sg-xxxx \
   --protocol tcp \
   --port 80 \
   --cidr 0.0.0.0/0
 
-# Allow outbound
+## Allow outbound
 aws ec2 authorize-security-group-egress \
   --group-id sg-xxxx \
   --protocol -1 \
@@ -165,7 +165,7 @@ aws ec2 authorize-security-group-egress \
 
 # 🌐 Blast Radius Isolation
 
-## 🔹 Environment Segmentation
+###🔹 Environment Segmentation
 
 - **Traffic Flow:** Dev → Prod:any  
 - **Layer:** L3  
