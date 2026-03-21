@@ -381,4 +381,40 @@ NAT → outbound-only access
 Public = exposed  
 Private = protected  
 
-Route + Gateway + Security = internet access  
+Route + Gateway + Security = internet access
+
+---
+
+# — Network Security (Security Groups & NACLs)
+
+- Security Group (SG) → instance-level firewall  
+- NACL → subnet-level firewall  
+- SG → stateful (auto allow return traffic)  
+- NACL → stateless (explicit allow needed both ways)  
+- SG → allow rules only  
+- NACL → allow + deny rules  
+- SG attached to → EC2 / ENI / LB / RDS  
+- NACL attached to → subnet  
+- Ephemeral ports → 1024–65535  
+- Traffic passes → NACL → SG → Instance  
+
+---
+
+### Failure Signals
+
+- Website not opening → SG inbound missing (80/443)  
+- Works locally, not externally → SG or binding issue  
+- Timeout → NACL / SG / routing block  
+- Intermittent failure → missing ephemeral ports  
+- EC2 cannot access internet → outbound blocked  
+
+---
+
+### Debug Order
+
+Check Route Table  
+→ Check Security Group  
+→ Check NACL  
+→ Check Service Binding  
+
+---
