@@ -1,4 +1,4 @@
-# DAY 11 — NETWORK SECURITY (SECURITY GROUPS & NACLs)
+# NETWORK SECURITY (SECURITY GROUPS & NACLs)
 ## Lifetime Production + Interview Reference Notes
 
 ---
