@@ -1,4 +1,4 @@
-# 🧠 LINUX — QUICK RECALL (LAYER 1)
+# 🧠 LINUX — QUICK RECALL
 > Purpose: fast memory refresh only (no explanations)
 
 ---
