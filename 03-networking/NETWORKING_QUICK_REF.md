@@ -418,3 +418,205 @@ Check Route Table
 → Check Service Binding  
 
 ---
+
+# — Multi-AZ & Failure Design
+
+- AZ → isolated datacenter zone
+- Multi-AZ → high availability architecture
+- One subnet per AZ
+- Public subnet per AZ
+- Private subnet per AZ
+- Load Balancer → distributes traffic across AZs
+- Health checks → remove unhealthy targets
+- NAT should exist per AZ
+- Single AZ deployment → SPOF
+- Multi-AZ DB → failover support
+- Failover → traffic shifts to healthy AZ
+- Redundancy → avoids outage
+- Blast radius → impact scope of failure
+
+### Traffic Flow
+
+Client  
+→ Load Balancer  
+→ Healthy AZ  
+→ Application Server  
+→ Database
+
+### Failure Signals
+
+- Entire app down after AZ failure → single-AZ deployment
+- Private subnet lost internet → NAT failure
+- Traffic routed to dead instance → failed health checks
+- One AZ overloaded → uneven target distribution
+- DB outage during failover → standby unhealthy
+
+### Debug Order
+
+Check AZ health  
+→ Check target health  
+→ Check subnet per AZ  
+→ Check NAT availability  
+→ Check failover routing
+
+### Deep Rule
+
+High availability = redundancy across AZs
+
+### Production Thinking
+
+Design for failure, not perfect uptime
+
+---
+
+# — Observability & Traffic Visibility
+
+- VPC Flow Logs → network traffic metadata
+- ACCEPT → traffic allowed
+- REJECT → traffic blocked
+- Flow Logs show:
+  - source IP
+  - destination IP
+  - port
+  - protocol
+  - action
+- Flow Logs ≠ packet payload
+- SG/NACL failures visible in Flow Logs
+- tcpdump → packet visibility
+- `ss -tuln` → listening ports
+- Observability → evidence-based debugging
+
+### Traffic Flow
+
+Client  
+→ DNS  
+→ Route  
+→ Security  
+→ Service  
+→ Application
+
+### Failure Signals
+
+- REJECT on 443 → HTTPS blocked
+- ACCEPT but app fails → application issue
+- No packets in tcpdump → traffic not reaching host
+- Domain fails, IP works → DNS issue
+- Connection refused → service not listening
+
+### Debug Order
+
+Check Flow Logs  
+→ ACCEPT or REJECT  
+→ Check Route  
+→ Check SG/NACL  
+→ Check Listening Service  
+→ Check Application
+
+### Deep Rule
+
+If you cannot see traffic, you are guessing
+
+### Production Thinking
+
+Logs + packet visibility = real debugging
+
+---
+
+# — Failure Scenarios (INTERVIEW GOLD)
+
+- DNS failure → domain unreachable
+- Route failure → no traffic path
+- SG block → port denied
+- NACL block → subnet traffic denied
+- Wrong binding → localhost-only service
+- NAT failure → no outbound internet
+- Connection refused → no listener
+- Timeout → dropped traffic
+- Blast radius → scope of impact
+- Production debugging → layer isolation
+
+### Failure Flow
+
+Client  
+→ DNS  
+→ Route  
+→ Security  
+→ Service  
+→ Application
+
+### Failure Signals
+
+- `Could not resolve host` → DNS
+- `No route to host` → routing issue
+- `Connection refused` → service issue
+- `Connection timed out` → SG/NACL/firewall
+- Works locally only → wrong bind IP
+- Private EC2 no internet → NAT missing
+
+### Debug Order
+
+DNS  
+→ Route  
+→ Security  
+→ Service Binding  
+→ Application
+
+### Deep Rule
+
+Every failure exists at a specific layer
+
+### Production Thinking
+
+Never guess — isolate the failing layer
+
+---
+
+# — Advanced Awareness
+
+- VPC Endpoint → private AWS service access
+- Peering → VPC ↔ VPC connectivity
+- Transit Gateway → centralized VPC routing hub
+- VPN → encrypted internet tunnel
+- Direct Connect → dedicated private AWS link
+- PrivateLink → private service exposure
+- TGW → hub-and-spoke architecture
+- Peering → no transitive routing
+- Overlapping CIDR → routing conflict
+- Hybrid cloud → on-prem ↔ AWS
+
+### Traffic Flow
+
+On-Prem  
+→ VPN / Direct Connect  
+→ AWS VPC  
+→ Application
+
+### Private AWS Access Flow
+
+Private EC2  
+→ VPC Endpoint  
+→ AWS Service
+
+### Failure Signals
+
+- VPCs can't communicate → missing peering/TGW route
+- Private EC2 uses internet for S3 → no VPC endpoint
+- Hybrid traffic unstable → VPN issue
+- Peering fails → overlapping CIDR
+- Large routing complexity → mesh peering problem
+
+### Debug Order
+
+Check Connectivity Type  
+→ Check Route Tables  
+→ Check CIDR Overlap  
+→ Check Gateway/TGW  
+→ Check Security Rules
+
+### Deep Rule
+
+Advanced networking exists to simplify secure connectivity
+
+### Production Thinking
+
+Scale connectivity without exposing infrastructure
