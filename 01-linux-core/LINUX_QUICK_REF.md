@@ -197,4 +197,130 @@
 - SYN-ACK → server response
 - ACK → connection established
 - RST → connection refused
-(add later)
+
+# 🧠 LOGS & SERVICES — QUICK RECALL
+
+> Purpose: fast production troubleshooting recall only
+
+---
+
+## Logs & Services
+
+- `systemctl status nginx` → service health + failure reason
+- `systemctl restart nginx` → controlled service restart
+- `journalctl` → full system logs
+- `journalctl -u nginx` → service-specific logs
+- `journalctl -u nginx -n 50` → recent service logs
+- `journalctl -f` → live logs
+- `journalctl -b` → boot logs
+- `tail -f /var/log/syslog` → live traditional logs
+- `less /var/log/syslog` → safe large log viewing
+- `/var/log` → log storage location
+
+### Quick Debug Flow
+
+- `systemctl status nginx` → service failed?
+- `journalctl -u nginx -n 50` → root cause?
+- `ss -tulnp` → port listening?
+- `curl localhost:80` → local app responding?
+- `journalctl -f` → live failure monitoring?
+
+### Production Logic
+
+- service failed → logs first
+- restart loop → dependency/config issue
+- active but failing → app-level issue
+- no logs → wrong log path/permission
+- boot issue → `journalctl -b`
+
+---
+
+# 🧠 TEXT PROCESSING & AUTOMATION — QUICK RECALL
+
+> Purpose: fast operational filtering + automation recall
+
+---
+
+## Text Processing & Automation
+
+- `grep error app.log` → filter errors
+- `grep -i error app.log` → case-insensitive search
+- `grep -c error app.log` → count failures
+- `awk '{print $1,$2}'` → extract fields
+- `sed 's/old/new/g' file` → replace values
+- `sed -i` → in-place modification
+- `xargs rm` → bulk delete
+- `find /var/log -size +100M` → large logs
+- `find /var/log -mtime +30` → stale logs
+- `ps aux | sort -k3 -nr | head` → top CPU consumers
+- `grep error app.log | wc -l` → total error count
+- `journalctl -u nginx | grep failed` → filtered service logs
+
+### Quick Debug Flow
+
+- huge logs → `grep`
+- structured output → `awk`
+- config replacement → `sed`
+- bulk operations → `xargs`
+- old logs → `find -mtime`
+- large files → `find -size`
+
+### Production Logic
+
+- grep = filter
+- awk = extract
+- sed = modify
+- xargs = automate bulk actions
+- pipelines = combine operational tools
+
+---
+
+# 🧠 REAL PRODUCTION SCENARIOS — QUICK RECALL
+
+> Purpose: production incident handling recall
+
+---
+
+## Real Production Scenarios
+
+- `hostnamectl` → verify server identity
+- `dmesg` → kernel/hardware/storage errors
+- `ulimit -a` → process/system limits
+- `rsync -av` → safe sync/backup
+- `df -h` → filesystem usage
+- `du -sh /var/*` → storage consumers
+- `find /var/log -size +100M` → oversized logs
+- `lsof | grep deleted` → hidden disk usage
+- `systemctl status nginx` → service state
+- `journalctl -u nginx -n 50` → service RCA
+- `ss -tulnp` → listening ports
+- `curl localhost:80` → local app validation
+- `ls -l` → file permissions
+- `ls -ld dir` → directory permissions
+- `stat file` → metadata verification
+- `id appuser` → user/group access
+- `ip a` → interface/IP validation
+- `ip r` → routing validation
+- `tcpdump -i eth0 port 8080` → packet capture
+- `journalctl --disk-usage` → journald storage growth
+- `find /var/log -mtime +30` → stale logs
+
+### Quick Incident Flow
+
+- disk full → `df -h`
+- service down → `systemctl status`
+- app unreachable → `ss -tulnp`
+- permission denied → `ls -l`
+- network issue → `ip a` + `ip r`
+- silent failures → `tcpdump`
+- deleted logs but disk full → `lsof | grep deleted`
+
+### Production Logic
+
+- observe first
+- logs before restart
+- measure before action
+- isolate local vs remote
+- confirm root cause before fix
+
+---
