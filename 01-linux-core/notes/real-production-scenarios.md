@@ -1,4 +1,4 @@
-# DAY 14 — REAL PRODUCTION SCENARIOS  —  Production Operational Scenarios
+# REAL PRODUCTION SCENARIOS  —  Production Operational Scenarios
 
 ---
 
