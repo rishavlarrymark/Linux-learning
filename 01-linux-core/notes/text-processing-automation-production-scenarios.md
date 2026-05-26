@@ -1,4 +1,4 @@
-# DAY 13 — TEXT PROCESSING & AUTOMATION  —  Production Operational Scenarios
+# TEXT PROCESSING & AUTOMATION  —  Production Operational Scenarios
 
 ---
 
