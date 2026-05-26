@@ -198,13 +198,10 @@
 - ACK → connection established
 - RST → connection refused
 
-# 🧠 LOGS & SERVICES — QUICK RECALL
-
-> Purpose: fast production troubleshooting recall only
-
 ---
 
 ## Logs & Services
+> Purpose: fast production troubleshooting recall only
 
 - `systemctl status nginx` → service health + failure reason
 - `systemctl restart nginx` → controlled service restart
@@ -235,13 +232,8 @@
 
 ---
 
-# 🧠 TEXT PROCESSING & AUTOMATION — QUICK RECALL
-
-> Purpose: fast operational filtering + automation recall
-
----
-
 ## Text Processing & Automation
+> Purpose: fast operational filtering + automation recall
 
 - `grep error app.log` → filter errors
 - `grep -i error app.log` → case-insensitive search
@@ -275,13 +267,8 @@
 
 ---
 
-# 🧠 REAL PRODUCTION SCENARIOS — QUICK RECALL
-
-> Purpose: production incident handling recall
-
----
-
 ## Real Production Scenarios
+> Purpose: production incident handling recall
 
 - `hostnamectl` → verify server identity
 - `dmesg` → kernel/hardware/storage errors
